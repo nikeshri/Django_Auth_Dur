@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
@@ -5,8 +6,14 @@ from .serializers import UserSerializer
 from .models import User
 import jwt, datetime
 
+from django.http import HttpResponse
+
 
 # Create your views here.
+def index(request):
+    return render(request,"index.html")
+
+
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
@@ -17,10 +24,11 @@ class RegisterView(APIView):
 
 class LoginView(APIView):
     def post(self, request):
-        email = request.data['email']
+        phone = request.data['phone']
+
         password = request.data['password']
 
-        user = User.objects.filter(email=email).first()
+        user = User.objects.filter(phone=phone).first()
 
         if user is None:
             raise AuthenticationFailed('User not found!')
@@ -30,7 +38,7 @@ class LoginView(APIView):
 
         payload = {
             'id': user.id,
-            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=60),
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=1),
             'iat': datetime.datetime.utcnow()
         }
 
