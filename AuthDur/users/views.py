@@ -1,12 +1,12 @@
+import datetime
+import jwt
 from django.shortcuts import render
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed
-from .serializers import UserSerializer
-from .models import User
-import jwt, datetime
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from django.http import HttpResponse
+from .models import User
+from .serializers import UserSerializer
 
 
 # Create your views here.
